@@ -1,1 +1,30 @@
+name: CI Pipeline
 
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: self-hosted  # Replace with 'ubuntu-latest' if you don't have a self-hosted runner
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Run Shell Script
+        run: |
+          chmod +x ./.sh
+          ./myscriptci.sh
+
+      - name: Publish Testsigma Test Results
+        uses: mikepenz/action-junit-report@v4
+        if: always()  # Runs even if previous steps fail
+        with:
+          report_paths: '**/junit-report-*.xml'
+          fail_on_failure: true
+          require_tests: true
