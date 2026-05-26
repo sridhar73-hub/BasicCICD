@@ -10,20 +10,24 @@ on:
 
 jobs:
   build:
-    runs-on: self-hosted  # Replace with 'ubuntu-latest' if you don't have a self-hosted runner
+    runs-on: self-hosted
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4  # upgraded to v4
 
-      - name: Run Shell Script
+      - name: Debug - List files
+        run: ls -la  # confirms CICD.sh exists in repo root
+
+      - name: Fix line endings & Run CICD Script
         run: |
+          sed -i 's/\r//' ./CICD.sh
           chmod +x ./CICD.sh
-          ./CICD.sh
+          bash ./CICD.sh
 
       - name: Publish Testsigma Test Results
         uses: mikepenz/action-junit-report@v4
-        if: always()  # Runs even if previous steps fail
+        if: always()
         with:
           report_paths: '**/junit-report-*.xml'
           fail_on_failure: true
