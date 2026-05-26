@@ -7,6 +7,7 @@ on:
   pull_request:
     branches:
       - master
+  workflow_dispatch:
 
 jobs:
   build:
@@ -14,16 +15,16 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4  # upgraded to v4
+        uses: actions/checkout@v4
 
       - name: Debug - List files
-        run: ls -la  # confirms CICD.sh exists in repo root
+        run: ls -la
 
       - name: Fix line endings & Run CICD Script
         run: |
           sed -i 's/\r//' ./CICD.sh
           chmod +x ./CICD.sh
-          bash ./CICD.sh
+          bash -x ./CICD.sh
 
       - name: Publish Testsigma Test Results
         uses: mikepenz/action-junit-report@v4
