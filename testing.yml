@@ -18,8 +18,8 @@ jobs:
 
       - name: Run Shell Script
         run: |
-          chmod +x ./.sh
-          ./myscriptci.sh
+          chmod +x ./CICD.sh
+          ./CICD.sh
 
       - name: Publish Testsigma Test Results
         uses: mikepenz/action-junit-report@v4
